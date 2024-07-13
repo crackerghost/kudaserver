@@ -112,6 +112,25 @@ app.post("/register", async (req, res) => {
 });
 
 
+app.get("/userData", async (req,res)=>{
+  const email = req.query.email;
+
+  if (!email) {
+    return res.status(400).send({ error: "Email query parameter is required" });
+  }
+
+  try {
+    const user = await User.findOne({ email }, 'email firstName lastName');
+    if (!user) {
+      return res.status(404).send({ error: "User not found" });
+    }
+    return res.status(200).send({ user });
+  } catch (error) {
+    console.error("Error fetching user data:", error);
+    return res.status(500).send({ error: "Internal Server Error" });
+  }
+}) 
+
 app.get("/verifytoken", (req, res) => {
   
   const authHeader = req.headers["authorization"];
