@@ -8,6 +8,22 @@
     ],
     "routes": [
       {
+        "src": "/verifyLogin",
+        "dest": "/index.js"  
+      },
+      {
+        "src": "/updatelocation",
+        "dest": "/index.js" 
+      },
+      {
+        "src": "/register",
+        "dest": "/index.js" 
+      },
+      {
+        "src": "/verifytoken",
+        "dest": "/index.js" 
+      },
+      {
         "src": "/(.*)",
         "dest": "/index.js" 
       }

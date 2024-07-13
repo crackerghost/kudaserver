@@ -14,6 +14,11 @@ app.use(bodyParser.json());
 app.use(cors());
 
 connectToDatabase();
+
+app.get("/", (req, res) => {
+  res.send("Hello from the root of the API!");
+});
+
 app.post('/verifyLogin', async (req, res) => {
   const { email, pass } = req.body;
   try {
