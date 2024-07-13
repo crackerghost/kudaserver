@@ -19,6 +19,11 @@ const regSchema = new mongoose.Schema({
     type: String,
     required: false,
   },
+  cityName:{
+   type: String,
+   required : false,
+
+  },
   role: {
     type: String,
     required: false,

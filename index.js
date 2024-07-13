@@ -50,9 +50,11 @@ app.post('/verifyLogin', async (req, res) => {
   }
 });
 
+
+
 app.post('/updatelocation', async (req, res) => {
-  const { email,long,lat} = req.body;
-   console.log(email);
+  const { email, long, lat, cityName } = req.body;
+
   try {
     // Find user by email
     const user = await regModel.findOne({ email });
@@ -60,30 +62,36 @@ app.post('/updatelocation', async (req, res) => {
       return res.status(404).json({ error: 'User not found' });
     }
 
-    // Update user's location
+    // Update user's location and cityName
     user.location = {
       type: 'Point',
       coordinates: [long, lat],
     };
+    user.cityName = cityName;
 
     // Save updated user data
     await user.save();
 
+    // Find users within a radius of 5 kilometers from the updated location
     const usersWithinRadius = await regModel.find({
       location: {
         $geoWithin: {
-          $centerSphere: [[long, lat], kmToRadians(5)]
-        }
+          $centerSphere: [[long, lat], kmToRadians(5)],
+        },
       },
-      role: "Buyer"
+      role: "Buyer", // Assuming you want to find only buyers
     });
-    // Respond with updated user data
-    res.status(200).json({usersWithinRadius});
+
+    // Respond with updated user data within the radius
+    res.status(200).json({ usersWithinRadius });
   } catch (error) {
     console.error('Error saving location:', error);
     res.status(500).json({ error: 'Internal Server Error' });
   }
 });
+
+
+
 
 
 
