@@ -15,6 +15,10 @@ const regSchema = new mongoose.Schema({
     type: String,
     required: false,
   },
+  lastname: {
+    type: String,
+    required: false,
+  },
   role: {
     type: String,
     required: false,

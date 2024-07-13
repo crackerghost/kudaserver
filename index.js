@@ -74,7 +74,7 @@ app.post('/updatelocation', async (req, res) => {
 
 
 app.post("/register", async (req, res) => {
-  const { email, name, pass, kyc,role ,type} = req.body;
+  const { email, name,lastname, pass, kyc,role ,type} = req.body;
 
   try {
     // Check if user with the same email already exists
@@ -90,6 +90,7 @@ app.post("/register", async (req, res) => {
     const newUser = new regModel({
       email,
       name,
+      lastname,
       password: hashedPass,
       kyc,
       role,
