@@ -13,7 +13,6 @@ app.use(express.json());
 app.use(bodyParser.json());
 app.use(cors());
 
-app.use(express.static(path.join(__dirname, "../dist")));
 connectToDatabase();
 app.post('/verifyLogin', async (req, res) => {
   const { email, pass } = req.body;
@@ -127,9 +126,6 @@ app.get("/verifytoken", (req, res) => {
   });
 });
 
-app.get("*", (req, res) => {
-  res.sendFile(path.join(__dirname, "../dist/index.html"));
-});
 
 app.listen(3000, () => {
   console.log("listening on port 3000");
