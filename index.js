@@ -74,9 +74,9 @@ app.post('/updatelocation', async (req, res) => {
         $geoWithin: {
           $centerSphere: [[long, lat], kmToRadians(5)]
         }
-      }
+      },
+      role: "Buyer"
     });
-
     // Respond with updated user data
     res.status(200).json({user,usersWithinRadius});
   } catch (error) {
