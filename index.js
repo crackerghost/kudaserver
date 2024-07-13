@@ -178,7 +178,7 @@ app.get("/verifytoken", (req, res) => {
 
 ////////addItems--------------------
 
-router.post("/addItems", async (req, res) => {
+app.post("/addItems", async (req, res) => {
   const { email, items } = req.body;
 
   try {
