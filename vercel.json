@@ -20,6 +20,16 @@
         "dest": "/index.js" 
       },
       {
+        "src": "/sendRequest",
+        "dest": "/index.js" 
+      },
+      {
+        "src": "/addItems",
+        "dest": "/index.js" 
+
+      },
+
+      {
         "src": "/verifytoken",
         "dest": "/index.js" 
       },
