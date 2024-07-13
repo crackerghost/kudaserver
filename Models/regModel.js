@@ -11,11 +11,11 @@ const regSchema = new mongoose.Schema({
     type: String,
     required: false,
   },
-  name: {
+  firstName: {
     type: String,
     required: false,
   },
-  lastname: {
+  lastName: {
     type: String,
     required: false,
   },
@@ -27,7 +27,7 @@ const regSchema = new mongoose.Schema({
     type: String,
     required: false,
   },
-  type: {
+  idProof: {
     type: String,
     required: false,
   },
