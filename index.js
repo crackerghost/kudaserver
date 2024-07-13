@@ -98,7 +98,7 @@ app.post("/register", async (req, res) => {
         lastName,
         kyc,
         email,
-        hashedPass,
+        password: hashedPass,
         role,
         idProof,
     });
