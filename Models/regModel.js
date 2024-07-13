@@ -53,7 +53,38 @@ const regSchema = new mongoose.Schema({
         required: true,
       },
     },
-  ]
+  ],
+  requests: [
+    {
+      requesterEmail: {
+        type: String,
+        required: true,
+      },
+      requesterLocation: {
+        type: {
+          type: String,
+          enum: ['Point'],
+          required: true,
+        },
+        coordinates: {
+          type: [Number],
+          required: true,
+        },
+      },
+      recipientEmail: {
+        type: String,
+        required: true,
+      },
+      status: {
+        type: String,
+        default: 'Pending',
+      },
+      createdAt: {
+        type: Date,
+        default: Date.now,
+      },
+    },
+  ],
 });
 regSchema.index({ location: '2dsphere' });
 
