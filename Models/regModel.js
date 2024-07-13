@@ -42,6 +42,18 @@ const regSchema = new mongoose.Schema({
       required: false,
     },
   },
+  items: [
+    {
+      name: {
+        type: String,
+        required: true,
+      },
+      pricePerKg: {
+        type: Number,
+        required: true,
+      },
+    },
+  ]
 });
 regSchema.index({ location: '2dsphere' });
 

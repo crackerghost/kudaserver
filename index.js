@@ -176,6 +176,34 @@ app.get("/verifytoken", (req, res) => {
 });
 
 
+////////addItems--------------------
+
+router.post("/addItems", async (req, res) => {
+  const { email, items } = req.body;
+
+  try {
+    // Find user by email
+    const user = await regModel.findOne({ email });
+
+    if (!user) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+
+    // Add new items to the existing items array
+    user.items.push(...items);
+
+    // Save updated user data
+    await user.save();
+
+    // Respond with updated user data
+    return res.status(200).json({ message: 'Items added successfully', user });
+  } catch (error) {
+    console.error('Error adding items:', error);
+    return res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
+
+
 app.listen(3000, () => {
   console.log("listening on port 3000");
 });
