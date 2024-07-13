@@ -214,7 +214,7 @@ app.post("/addItems", async (req, res) => {
 ///////requestOrder
 
 app.post('/sendRequest', async (req, res) => {
-  const { requesterEmail, requesterLocation, recipientEmail, additionalData } = req.body;
+  const { requesterEmail, requesterLocation, recipientEmail, additionalData ,scheduledTime } = req.body;
 
   try {
     // Check if the recipient exists
@@ -228,6 +228,7 @@ app.post('/sendRequest', async (req, res) => {
       requesterEmail,
       requesterLocation,
       recipientEmail,
+      scheduledTime,
       additionalData, // Optional: add any additional data from the request body
       status: 'Pending', // Default status
       createdAt: new Date(), // Current date and time

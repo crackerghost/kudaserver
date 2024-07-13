@@ -80,6 +80,7 @@ const regSchema = new mongoose.Schema({
         type: String,
         required: true,
       },
+      scheduledTime: { type: Date, required: false}, 
       status: {
         type: String,
         default: 'Pending',
