@@ -111,8 +111,7 @@ app.post("/register", async (req, res) => {
   }
 });
 
-
-app.get("/userData", async (req,res)=>{
+app.get("/userData", async (req, res) => {
   const email = req.query.email;
 
   if (!email) {
@@ -120,7 +119,8 @@ app.get("/userData", async (req,res)=>{
   }
 
   try {
-    const user = await User.findOne({ email }, 'email firstName lastName');
+    // Exclude the password field
+    const user = await regModel.findOne({ email }).select('-password');
     if (!user) {
       return res.status(404).send({ error: "User not found" });
     }
@@ -129,7 +129,7 @@ app.get("/userData", async (req,res)=>{
     console.error("Error fetching user data:", error);
     return res.status(500).send({ error: "Internal Server Error" });
   }
-}) 
+});
 
 app.get("/verifytoken", (req, res) => {
   
