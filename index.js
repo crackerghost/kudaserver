@@ -15,6 +15,12 @@ app.use(cors());
 
 connectToDatabase();
 
+//function km to radians 
+const kmToRadians = (km) => {
+  return km / 6378.1; // Earth's radius in kilometers
+};
+
+
 app.get("/", (req, res) => {
   res.send("Hello from the root of the API!");
 });
@@ -63,13 +69,23 @@ app.post('/updatelocation', async (req, res) => {
     // Save updated user data
     await user.save();
 
+    const usersWithinRadius = await regModel.find({
+      location: {
+        $geoWithin: {
+          $centerSphere: [[long, lat], kmToRadians(5)]
+        }
+      }
+    });
+
     // Respond with updated user data
-    res.status(200).json(user);
+    res.status(200).json({user,usersWithinRadius});
   } catch (error) {
     console.error('Error saving location:', error);
     res.status(500).json({ error: 'Internal Server Error' });
   }
 });
+
+
 
 
 
@@ -136,6 +152,8 @@ app.get("/userData", async (req, res) => {
     return res.status(500).send({ error: "Internal Server Error" });
   }
 });
+
+
 
 app.get("/verifytoken", (req, res) => {
   
