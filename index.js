@@ -203,6 +203,40 @@ app.post("/addItems", async (req, res) => {
   }
 });
 
+///////requestOrder
+
+app.post('/sendRequest', async (req, res) => {
+  const { requesterEmail, requesterLocation, recipientEmail, additionalData } = req.body;
+
+  try {
+    // Check if the recipient exists
+    const recipient = await regModel.findOne({ email: recipientEmail });
+    if (!recipient) {
+      return res.status(404).json({ error: 'Recipient not found' });
+    }
+
+    // Create a new request object
+    const newRequest = {
+      requesterEmail,
+      requesterLocation,
+      recipientEmail,
+      additionalData, // Optional: add any additional data from the request body
+      status: 'Pending', // Default status
+      createdAt: new Date(), // Current date and time
+    };
+
+    // Save the request to the recipient's document
+    recipient.requests.push(newRequest);
+    await recipient.save();
+
+    // Respond with success message
+    return res.status(200).json({ message: 'Request sent successfully' });
+  } catch (error) {
+    console.error('Error sending request:', error);
+    return res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
+
 
 app.listen(3000, () => {
   console.log("listening on port 3000");
