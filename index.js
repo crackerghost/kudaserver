@@ -78,7 +78,7 @@ app.post('/updatelocation', async (req, res) => {
       role: "Buyer"
     });
     // Respond with updated user data
-    res.status(200).json({user,usersWithinRadius});
+    res.status(200).json({usersWithinRadius});
   } catch (error) {
     console.error('Error saving location:', error);
     res.status(500).json({ error: 'Internal Server Error' });
