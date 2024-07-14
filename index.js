@@ -265,7 +265,7 @@ app.post('/sendApproveReq', async (req, res) => {
       recipientEmail,
       scheduledTime,
 // Optional: add any additional data from the request body
-      status: 'Accepted', // Default status
+      status: 'Appointed', // Default status
       createdAt: new Date(), // Current date and time
     };
 
