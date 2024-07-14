@@ -77,7 +77,7 @@ app.post('/updatelocation', async (req, res) => {
     const usersWithinRadius = await regModel.find({
       location: {
         $geoWithin: {
-          $centerSphere: [[long, lat], kmToRadians(10)],
+          $centerSphere: [[long, lat], kmToRadians(5)],
         },
       },
       role: "Buyer", // Assuming you want to find only buyers
