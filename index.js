@@ -305,11 +305,11 @@ app.get('/map-token', async (req, res) => {
 
 
 app.post('/updateRequestStatus', async (req, res) => {
-  const { email, requestID, status } = req.body;
+  const {  requesterEmail, requestID,  recipientEmail, status} = req.body;
 
   try {
     const updatedRequest = await regModel.findOneAndUpdate(
-      { 'requests.requesterEmail': email, 'requests._id': requestID },
+      { 'requests.requesterEmail': requesterEmail, 'requests._id': requestID,'requests.recipientEmail' : recipientEmail },
       { $set: { 'requests.$.status': status } },
       { new: true }
     );
