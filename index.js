@@ -305,25 +305,29 @@ app.get('/map-token', async (req, res) => {
 
 
 app.post('/updateRequestStatus', async (req, res) => {
-  const {  requesterEmail, requestID,  recipientEmail, status} = req.body;
+  const { requesterEmail, requestID, recipientEmail, status } = req.body;
 
   try {
+    // Update the status of the specific request
     const updatedRequest = await regModel.findOneAndUpdate(
-      { 'requests.requesterEmail': requesterEmail, 'requests._id': requestID,'requests.recipientEmail' : recipientEmail },
+      { 'requests.requesterEmail': requesterEmail, 'requests._id': requestID, 'requests.recipientEmail': recipientEmail },
       { $set: { 'requests.$.status': status } },
-      { new: true }
+      { new: true } // Return the updated document
     );
 
+    // Check if the request was found and updated
     if (!updatedRequest) {
-      return res.status(404).json({ error: 'Request not found' });
+      return res.status(404).json({ error: 'Request not found or not updated' });
     }
 
+    // Send success response with updated request details
     return res.status(200).json({ message: 'Request status updated successfully', updatedRequest });
   } catch (error) {
     console.error('Error updating request status:', error);
     return res.status(500).json({ error: 'Internal Server Error' });
   }
 });
+
 
 
 
