@@ -261,7 +261,7 @@ app.post('/sendApproveReq', async (req, res) => {
     // Create a new request object
     const newRequest = {
       requesterEmail,
-      requesterLocation,
+      additionalData,
       recipientEmail,
       scheduledTime,
 // Optional: add any additional data from the request body
