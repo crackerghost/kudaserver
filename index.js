@@ -272,7 +272,7 @@ app.post('/updateStatus', async (req, res) => {
     // Update status in buyer's database
     const updatedRequest = await regModel.findByIdAndUpdate(
       requestID,
-      { $set: { status } },
+      { status: status },
       { new: true }
     );
 
@@ -295,7 +295,7 @@ app.post('/updateRequestStatus', async (req, res) => {
     // Update status in requester's database
     const updatedRequest = await regModel.findOneAndUpdate(
       { requesterEmail, _id: requestID },
-      { $set: { status } },
+      { status: status  },
       { new: true }
     );
 
