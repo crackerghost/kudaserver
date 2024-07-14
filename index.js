@@ -305,12 +305,12 @@ app.get('/map-token', async (req, res) => {
 
 
 app.post('/updateRequestStatus', async (req, res) => {
-  const { requesterEmail, requestID, recipientEmail, status } = req.body;
+  const { requestID, status } = req.body;
 
   try {
     // Update the status of the specific request
     const updatedRequest = await regModel.findOneAndUpdate(
-      { 'requests.requesterEmail': requesterEmail, 'requests._id': requestID, 'requests.recipientEmail': recipientEmail },
+      { 'requests._id': requestID },
       { $set: { 'requests.$.status': status } },
       { new: true } // Return the updated document
     );
@@ -327,8 +327,6 @@ app.post('/updateRequestStatus', async (req, res) => {
     return res.status(500).json({ error: 'Internal Server Error' });
   }
 });
-
-
 
 
 app.listen(3000, () => {
