@@ -83,6 +83,7 @@ const regSchema = new mongoose.Schema({
       scheduledTime: { type: Date, required: false}, 
       status: {
         type: String,
+        enum: ['Pending', 'Appointed', 'Rejected'],
         default: 'Pending',
       },
       createdAt: {

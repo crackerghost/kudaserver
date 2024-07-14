@@ -265,6 +265,51 @@ app.get('/map-token', async (req, res) => {
   }
 });
 
+app.post('/updateStatus', async (req, res) => {
+  const { email, requestID, status } = req.body;
+
+  try {
+    // Update status in buyer's database
+    const updatedRequest = await regModel.findByIdAndUpdate(
+      requestID,
+      { $set: { status } },
+      { new: true }
+    );
+
+    if (!updatedRequest) {
+      return res.status(404).json({ error: 'Request not found' });
+    }
+
+    return res.status(200).json({ message: 'Status updated successfully', updatedRequest });
+  } catch (error) {
+    console.error('Error updating status:', error);
+    return res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
+
+// Endpoint to update status in requester's database
+app.post('/updateRequestStatus', async (req, res) => {
+  const { requesterEmail, requestID, status } = req.body;
+
+  try {
+    // Update status in requester's database
+    const updatedRequest = await regModel.findOneAndUpdate(
+      { requesterEmail, _id: requestID },
+      { $set: { status } },
+      { new: true }
+    );
+
+    if (!updatedRequest) {
+      return res.status(404).json({ error: 'Request not found' });
+    }
+
+    return res.status(200).json({ message: 'Request status updated successfully', updatedRequest });
+  } catch (error) {
+    console.error('Error updating request status:', error);
+    return res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
+
 
 app.listen(3000, () => {
   console.log("listening on port 3000");
