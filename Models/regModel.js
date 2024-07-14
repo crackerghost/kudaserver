@@ -89,6 +89,10 @@ const regSchema = new mongoose.Schema({
         type: Date,
         default: Date.now,
       },
+      additionalData:{
+        type : String,
+        required : false
+      }
     },
   ],
 });
