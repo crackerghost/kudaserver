@@ -8,6 +8,7 @@ const secretKey = "rajsingh123@";
 const connectToDatabase = require("./Models/db");
 const regModel = require('./Models/regModel'); // Import RegModel
 const bodyParser = require('body-parser');
+const MapToken = require("./Models/mapMode");
 app.use(express.json());
 
 app.use(bodyParser.json());
@@ -243,6 +244,24 @@ app.post('/sendRequest', async (req, res) => {
   } catch (error) {
     console.error('Error sending request:', error);
     return res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
+
+app.get('/map-token', async (req, res) => {
+  try {
+    // Fetch the map token from the database
+    const mapToken = await MapToken.findOne();
+
+    // Check if token exists
+    if (!mapToken) {
+      return res.status(404).json({ error: 'Map token not found' });
+    }
+
+    // Send the token to the frontend
+    res.json({ token: mapToken.token });
+  } catch (error) {
+    console.error('Error fetching map token:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
   }
 });
 
