@@ -247,6 +247,42 @@ app.post('/sendRequest', async (req, res) => {
   }
 });
 
+
+app.post('/sendApproveReq', async (req, res) => {
+  const { requesterEmail, requesterLocation, recipientEmail, additionalData ,scheduledTime } = req.body;
+
+  try {
+    // Check if the recipient exists
+    const recipient = await regModel.findOne({ email: recipientEmail });
+    if (!recipient) {
+      return res.status(404).json({ error: 'Recipient not found' });
+    }
+
+    // Create a new request object
+    const newRequest = {
+      requesterEmail,
+      requesterLocation,
+      recipientEmail,
+      scheduledTime,
+// Optional: add any additional data from the request body
+      status: 'Accepted', // Default status
+      createdAt: new Date(), // Current date and time
+    };
+
+    // Save the request to the recipient's document
+    recipient.requests.push(newRequest);
+    await recipient.save();
+
+    // Respond with success message
+    return res.status(200).json({ message: 'Request sent successfully' });
+  } catch (error) {
+    console.error('Error sending request:', error);
+    return res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
+
+
+
 app.get('/map-token', async (req, res) => {
   try {
     // Fetch the map token from the database
@@ -265,37 +301,16 @@ app.get('/map-token', async (req, res) => {
   }
 });
 
-app.post('/updateStatus', async (req, res) => {
+
+
+
+app.post('/updateRequestStatus', async (req, res) => {
   const { email, requestID, status } = req.body;
 
   try {
-    // Update status in buyer's database
-    const updatedRequest = await regModel.findByIdAndUpdate(
-      requestID,
-      { status: status },
-      { new: true }
-    );
-
-    if (!updatedRequest) {
-      return res.status(404).json({ error: 'Request not found' });
-    }
-
-    return res.status(200).json({ message: 'Status updated successfully', updatedRequest });
-  } catch (error) {
-    console.error('Error updating status:', error);
-    return res.status(500).json({ error: 'Internal Server Error' });
-  }
-});
-
-// Endpoint to update status in requester's database
-app.post('/updateRequestStatus', async (req, res) => {
-  const { requesterEmail, requestID, status } = req.body;
-
-  try {
-    // Update status in requester's database
     const updatedRequest = await regModel.findOneAndUpdate(
-      { requesterEmail, _id: requestID },
-      { status: status  },
+      { 'requests.requesterEmail': email, 'requests._id': requestID },
+      { $set: { 'requests.$.status': status } },
       { new: true }
     );
 
@@ -309,6 +324,7 @@ app.post('/updateRequestStatus', async (req, res) => {
     return res.status(500).json({ error: 'Internal Server Error' });
   }
 });
+
 
 
 app.listen(3000, () => {
